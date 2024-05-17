@@ -83,8 +83,8 @@ const UserProfile = () => {
   return (
     <>
       <GoBack />
-      <div className="flex items-center gap-4">
-        <Card className="flex flex-col items-center text-center space-y-4 p-5 flex-2">
+      <div className="flex userprofile-user items-center gap-4">
+        <Card className="flex  userprofile-user-1  flex-col items-center text-center space-y-4 p-5 flex-2">
           <Image
             src={`${BASE_URL}${data?.avatarUrl}`}
             alt={data?.name}
@@ -117,7 +117,7 @@ const UserProfile = () => {
             )}
           </div>
         </Card>
-        <Card className="flex flex-col space-y-4 p-5 flex-1">
+        <Card className="flex userprofile-user-1 flex-col space-y-4 p-5 flex-1">
           <ProfileInfo title="Почта" info={data.email} />
           <ProfileInfo title="Местоположение" info={data.location} />
           <ProfileInfo
