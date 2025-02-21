@@ -21,7 +21,7 @@ const Profile = () => {
         <Image
           alt="Card Profile"
           className="object-cover rounded-xl"
-          src={`${BASE_URL}${avatarUrl}`}
+          src={`${BASE_URL}/api${avatarUrl}`}
           width={370}
         />
       </CardHeader>

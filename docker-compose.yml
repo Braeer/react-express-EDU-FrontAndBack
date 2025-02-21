@@ -1,29 +1,43 @@
 version: '3'
 
 services:
-  express-app:
+  express:
     build: .
+    container_name: express
     ports:
       - '3000:3000'
     depends_on:
-      - mongodb_container
-      - react-app
+      - mongodb
     environment:
-      DATABASE_URL: 'mongodb://admin:admin@localhost:27020/mydatabase?authSource=admin&directConnection=true'
+      DATABASE_URL: 'mongodb://admin:admin@mongodb:27017/mydatabase?authSource=admin&directConnection=true'
       SECRET_KEY: 'PasswordConnect-Hash'
-  mongodb_container:
-    # This image automatically creates a replica set required for transactions
+    networks:
+      - app
+    command: ['/bin/sh', '-c', 'sleep 10 && prisma db push && npm start']
+  mongodb:
     image: prismagraphql/mongo-single-replica:4.4.3-bionic
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
       INIT_WAIT_SEC: 3
     ports:
-      - 27020:27017
-  react-app: # React-приложение
-    build: ./react-client # Путь к вашему React-приложению относительно корня вашего проекта
+      - 27017:27017
+    networks:
+      - app
+
+  react-app:
+    build: ./react-client
     ports:
-      - '80:80' # Порт, на котором будет доступно ваше React-приложение
-      - '8000:8000' # Порт, на котором будет доступно ваше React-приложение
+      - '80:80'
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - express
+    networks:
+      - app
 volumes:
-  react_app: # Объявление именованного тома
+  data:
+
+networks:
+  app:
+    driver: bridge
