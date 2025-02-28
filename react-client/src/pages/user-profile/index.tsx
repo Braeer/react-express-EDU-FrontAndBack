@@ -86,7 +86,7 @@ const UserProfile = () => {
       <div className="flex userprofile-user items-center gap-4">
         <Card className="flex  userprofile-user-1  flex-col items-center text-center space-y-4 p-5 flex-2">
           <Image
-            src={`${BASE_URL}${data?.avatarUrl}`}
+            src={`${BASE_URL}/api${data?.avatarUrl}`}
             alt={data?.name}
             width={200}
             height={200}

@@ -19,7 +19,7 @@ const User: React.FC<Props> = ({
       name={name}
       className={className}
       description={description}
-      avatarProps={{ src: `${BASE_URL}${avatarUrl}` }}
+      avatarProps={{ src: `${BASE_URL}/api${avatarUrl}` }}
     />
   )
 }
