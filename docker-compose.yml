@@ -5,7 +5,7 @@ services:
     build: .
     container_name: express
     ports:
-      - '3000:3000'
+      - '3009:3009'
     depends_on:
       - mongodb
     environment:
@@ -28,16 +28,20 @@ services:
   react-app:
     build: ./react-client
     ports:
-      - '80:80'
+      - '81:81'
     environment:
       - NODE_ENV=production
     depends_on:
       - express
     networks:
       - app
+      - portfolio
+
 volumes:
   data:
 
 networks:
   app:
     driver: bridge
+  portfolio:
+    external: true
