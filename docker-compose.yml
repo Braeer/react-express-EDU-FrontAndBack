@@ -4,38 +4,42 @@ services:
   express:
     build: .
     container_name: express
-    ports:
-      - '3009:3009'
+    # ports:
+    #   - '3009:3009'
     depends_on:
       - mongodb
     environment:
-      DATABASE_URL: 'mongodb://admin:admin@mongodb:27017/mydatabase?authSource=admin&directConnection=true'
-      SECRET_KEY: 'PasswordConnect-Hash'
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
     networks:
       - app
-    command: ['/bin/sh', '-c', 'sleep 10 && prisma db push && npm start']
+      - db
+    command: ['/bin/sh', '-c', 'sleep 10 && npx prisma db push && npm start']
+    restart: always
+
   mongodb:
     image: prismagraphql/mongo-single-replica:4.4.3-bionic
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       INIT_WAIT_SEC: 3
-    ports:
-      - 27017:27017
+    # ports:
+    #   - 27017:27017
     networks:
-      - app
+      - db
+    restart: always
 
   react-app:
     build: ./react-client
     ports:
-      - '81:81'
+      - '${CLIENT_PORT}:80'
     environment:
       - NODE_ENV=production
     depends_on:
       - express
     networks:
       - app
-      - portfolio
+    restart: always
 
 volumes:
   data:
@@ -43,5 +47,5 @@ volumes:
 networks:
   app:
     driver: bridge
-  portfolio:
-    external: true
+  db:
+    driver: bridge
